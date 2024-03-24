@@ -72,10 +72,8 @@ public class SecurityConfig {
         Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
     corsConfiguration.setAllowCredentials(true);
     corsConfiguration.addAllowedHeader("*");
+    corsConfiguration.addAllowedOrigin("http://localhost:8888");
     corsConfiguration.addAllowedOrigin("http://localhost:3000");
-    corsConfiguration.addAllowedOrigin("https://ecomm-ui-kappa.vercel.app");
-    corsConfiguration.addAllowedOrigin(
-        "https://ecomm-ui-git-master-conservativeasslovers-projects.vercel.app");
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", corsConfiguration);
     return source;

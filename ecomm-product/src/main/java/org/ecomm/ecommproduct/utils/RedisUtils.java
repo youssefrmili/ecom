@@ -34,6 +34,9 @@ public class RedisUtils {
 
   public void initializeRedis() {
     var inventories = inventoryRepository.findAll();
+    for(var inventory:inventories) {
+      log.info("inventor::: {}", inventory);
+    }
 
     List<RInventory> rInventories =
         Utility.stream(inventories)
@@ -45,10 +48,10 @@ public class RedisUtils {
                                 .quantityAvailable(eInventory.getQuantityAvailable())
                                 .sku(eInventory.getSku())
                                 .id(eInventory.getId())
-                                .variantId(eInventory.getVariant().getId())
+                                .variantId(eInventory.getVariant() != null ? eInventory.getVariant().getId() : 1)
                                 .quantitySold(eInventory.getQuantitySold())
                                 .build())
-                        .variantId(eInventory.getVariant().getId())
+                        .variantId(eInventory.getVariant() != null ? eInventory.getVariant().getId() : 1)
                         .build())
             .toList();
 
