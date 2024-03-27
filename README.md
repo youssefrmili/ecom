@@ -16,15 +16,16 @@ The entire application can be run locally with docker-compose by following these
 2. Create [Stripe](https://stripe.com/) and [Auth0](auth0.com) accounts, and fill the following environment variables in **.env**
    | Environment variable | Example Value |
    | -------------------------- | ----------------------------|
-   | AUTH0*ISSUER | https://*dev-id*.us.auth0.com/|
-   | AUTH0_USERINFO_URL | https://*dev-id*.us.auth0.com/userinfo |
-   | STRIPE_API_KEY | Token starting with pk_test*... |
+   | AUTH0_ISSUER | https://**dev-id**.us.auth0.com/|
+   | AUTH0_USERINFO_URL | https://**dev-id**.us.auth0.com/userinfo |
+   | STRIPE_API_KEY | Token starting with pk_test... |
 
    The remaining variables don't need to be changed for the app to run.
 
 3. At the root of the project, run the following command
    `docker compose up --build `
 4. When all the containers are running, open the browser and connect to http://localhost:8888
+5. Register as a regular user OR login as admin using `admin@example.com` and `password` as credentials.
 
 ## Application architecture
 
