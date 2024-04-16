@@ -15,13 +15,6 @@ pipeline {
                     }
                 }
 
-                dir('ecomm-db') {
-                    script {
-                        // Build ecomm-db microservice
-                        sh 'mvn clean package'
-                    }
-                }
-
                 dir('ecomm-gateway') {
                     script {
                         // Build ecomm-gateway microservice
