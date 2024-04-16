@@ -10,4 +10,5 @@ hooks:
   ApplicationStart:
     - location: start_container.sh
       timeout: 20
+      
       runas: ec2-user
