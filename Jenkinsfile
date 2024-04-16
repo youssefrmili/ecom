@@ -7,17 +7,9 @@ pipeline {
                 // Clone the repository
                 git 'https://github.com/youssefrmili/ecom.git'
 
-                // Build each microservice individually
+                // Build ecomm-cart microservice
                 dir('ecomm-cart') {
                     script {
-                        // Build ecomm-cart microservice
-                        sh 'mvn clean package'
-                    }
-                }
-
-                dir('ecomm-gateway') {
-                    script {
-                        // Build ecomm-gateway microservice
                         sh 'mvn clean package'
                     }
                 }
