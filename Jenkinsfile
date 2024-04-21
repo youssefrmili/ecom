@@ -60,7 +60,7 @@ pipeline {
                         // Navigate into the microservice folder
                         dir(folder) {
                             // Execute SAST with SonarQube
-                            withSonarQubeEnv(credentialsId: 'sonarqube-id') {
+                            withSonarQubeEnv(credentialsId: 'sonarqube-id' installationName: 'sonarqube') {
                                 sh 'mvn sonar:sonar'
                                 sh 'cat target/sonar/report-task.txt'
 
