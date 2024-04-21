@@ -49,7 +49,7 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis & Quality Gate') {
+        stage('SonarQube Analysis') {
             steps {
                 script {
                     // Define the microservice folder names again
@@ -60,14 +60,29 @@ pipeline {
                         // Navigate into the microservice folder
                         dir(folder) {
                             // Execute SAST with SonarQube
-                            withSonarQubeEnv(credentialsId: 'sonarqube-id' installationName: 'sonarqube') {
+                            withSonarQubeEnv(credentialsId: 'sonarqube-id') {
                                 sh 'mvn sonar:sonar'
                                 sh 'cat target/sonar/report-task.txt'
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-                                // Run quality gate
-                                timeout(time: 1, unit: 'MINUTES') {
-                                    sonar.qualitygate.wait abortPipeline: true
-                                }
+        stage('Quality Gate') {
+            steps {
+                script {
+                    // Define the microservice folder names again
+                    def microserviceFolders = ['ecomm-cart', 'ecomm-order', 'ecomm-product', 'ecomm-web']
+
+                    // Iterate over each microservice folder
+                    for (def folder in microserviceFolders) {
+                        // Navigate into the microservice folder
+                        dir(folder) {
+                            // Run quality gate
+                            timeout(time: 1, unit: 'MINUTES') {
+                                waitForQualityGate abortPipeline: true
                             }
                         }
                     }
