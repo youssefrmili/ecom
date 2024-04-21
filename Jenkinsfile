@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                     // Define the microservice folder names
-                    def microserviceFolders = ['ecomm-cart', 'ecomm-db', 'ecomm-gateway', 'ecomm-order', 'ecomm-product', 'ecomm-ui', 'ecomm-web']
+                    def microserviceFolders = ['ecomm-cart', 'ecomm-order', 'ecomm-product', 'ecomm-ui', 'ecomm-web']
 
                     // Iterate over each microservice folder
                     for (def folder in microserviceFolders) {
@@ -35,7 +35,7 @@ pipeline {
             steps {
                 script {
                     // Define the microservice folder names again
-                    def microserviceFolders = ['ecomm-cart', 'ecomm-db', 'ecomm-gateway', 'ecomm-order', 'ecomm-product', 'ecomm-ui', 'ecomm-web']
+                    def microserviceFolders = ['ecomm-cart', 'ecomm-order', 'ecomm-product', 'ecomm-ui', 'ecomm-web']
 
                     // Iterate over each microservice folder
                     for (def folder in microserviceFolders) {
@@ -53,7 +53,7 @@ pipeline {
             steps {
                 script {
                     // Define the microservice folder names again
-                    def microserviceFolders = ['ecomm-cart', 'ecomm-db', 'ecomm-gateway', 'ecomm-order', 'ecomm-product', 'ecomm-ui', 'ecomm-web']
+                    def microserviceFolders = ['ecomm-cart', 'ecomm-order', 'ecomm-product', 'ecomm-ui', 'ecomm-web']
 
                     // Iterate over each microservice folder
                     for (def folder in microserviceFolders) {
@@ -74,7 +74,7 @@ pipeline {
             steps {
                 script {
                     // Define the microservice folder names again
-                    def microserviceFolders = ['ecomm-cart', 'ecomm-db', 'ecomm-gateway', 'ecomm-order', 'ecomm-product', 'ecomm-ui', 'ecomm-web']
+                    def microserviceFolders = ['ecomm-cart', 'ecomm-order', 'ecomm-product', 'ecomm-ui', 'ecomm-web']
 
                     // Iterate over each microservice folder
                     for (def folder in microserviceFolders) {
