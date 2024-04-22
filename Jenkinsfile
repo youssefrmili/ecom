@@ -11,7 +11,7 @@ pipeline {
                     // Code for SCM Checkout
                     checkout([
                         $class: 'GitSCM', 
-                        branches: [[name: 'feature']], 
+                        branches: [[name: 'featuree']], 
                         userRemoteConfigs: [[url: 'https://github.com/youssefrmili/ecom.git']]
                     ])
                 }
@@ -46,7 +46,7 @@ pipeline {
                 script {
                     CI_ERROR = "Failed while testing microservices"
                     // Iterate over each microservice folder
-                    afor (def folder in microserviceFolders) {
+                    for (def folder in microserviceFolders) {
                         // Navigate into the microservice folder
                         dir(folder) {
                             // Test the microservice
