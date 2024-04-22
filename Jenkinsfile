@@ -1,8 +1,8 @@
- // Define the microservice folder names
-def microserviceFolders = ['ecomm-cart', 'ecomm-order', 'ecomm-product', 'ecomm-web']
 pipeline {
     agent any
 
+    // Define the microservice folder names
+    def microserviceFolders = ['ecomm-cart']
 
     stages {
         stage('Checkout') {
@@ -64,4 +64,15 @@ pipeline {
             }
         }
     }
+    
+    post {
+        always {
+            node {
+                // Upload a file and send a message to Slack
+                sh "echo hey > blah.txt"
+                slackUploadFile filePath: "*.txt", initialComment:  "HEY HEY"
+            }
+        }
+    }
 }
+
