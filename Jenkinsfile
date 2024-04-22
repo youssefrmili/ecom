@@ -10,7 +10,7 @@ pipeline {
                 // Checkout the main repository
                 checkout([
                     $class: 'GitSCM', 
-                    branches: [[name: 'feature']], 
+                    branches: [[name: 'featuree']], 
                     userRemoteConfigs: [[url: 'https://github.com/youssefrmili/ecom.git']]
                 ])
             }
@@ -64,10 +64,11 @@ pipeline {
             }
         }
         
-        stage('Slack Notification') {
-            steps {
-                // Upload a file to Slack
-                slackUploadFile filePath: 'README.md', initialComment:  "HEY HEY"
+  post {
+        failure {
+            script {
+                def failedStage = currentBuild.rawBuild.getCause(hudson.model.Failure.class).failedSinceLabel
+                println "Pipeline failed in stage: ${failedStage}"
             }
         }
     }
