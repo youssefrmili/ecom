@@ -10,7 +10,7 @@ pipeline {
                 // Checkout the main repository
                 checkout([
                     $class: 'GitSCM', 
-                    branches: [[name: 'featuree']], 
+                    branches: [[name: 'feature']], 
                     userRemoteConfigs: [[url: 'https://github.com/youssefrmili/ecom.git']]
                 ])
             }
@@ -24,7 +24,7 @@ pipeline {
                         // Navigate into the microservice folder
                         dir(folder) {
                             // Build the microservice
-                            sh 'mvn clean install'
+                            sh 'mvn clean installl'
                         }
                     }
                 }
