@@ -64,12 +64,3 @@ pipeline {
         }
     }
 
-    post {
-        failure {
-            script {
-                def failedStage = currentBuild.rawBuild.getCause(hudson.model.Failure.class).failedSinceLabel
-                println "Pipeline failed in stage: ${failedStage}"
-            }
-        }
-    }
-}
