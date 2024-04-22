@@ -67,7 +67,7 @@ pipeline {
         stage('Slack Notification') {
             steps {
                 // Upload a file to Slack
-                slackUploadFile filePath: '/var/lib/jenkins/workspace/eee_feature/README.md', initialComment:  "HEY HEY"
+                slackUploadFile filePath: 'README.md', initialComment:  "HEY HEY"
             }
         }
     }
