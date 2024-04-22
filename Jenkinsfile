@@ -3,8 +3,6 @@ def microserviceFolders = ['ecomm-cart', 'ecomm-order', 'ecomm-product', 'ecomm-
 pipeline {
     agent any
 
-
-
     stages {
         stage('Checkout') {
             steps {
@@ -61,6 +59,14 @@ pipeline {
                             }
                         }
                     }
+                }
+            }
+        }
+        
+        stage('Slack Notification') {
+            steps {
+                script {
+                    slackSend botUser: true, channel: 'test', message: 'success', teamDomain: 'Sofiatech PFE Interns ', username: 'jenkins'
                 }
             }
         }
