@@ -44,7 +44,24 @@ pipeline {
                 }
             }
         }
-
+        
+        post {
+            always {
+                junit 'build/reports/**/*.xml'
+            }
+        }
+        
+        stage('Slack Notification') {
+            steps {
+                // Execute steps in a node
+                node {
+                    // Upload a file and send a message to Slack
+                    sh "find . -name 'TEST-*.xml' | xargs zip test-reports.zip"
+                    slackUploadFile filePath: 'test-reports.zip', initialComment:  "Test Reports"
+                }
+            }
+        }
+        
         stage('SonarQube Analysis') {
             steps {
                 script {
@@ -55,7 +72,7 @@ pipeline {
                             // Execute SAST with SonarQube
                             withSonarQubeEnv(credentialsId: 'sonarqube-id') {
                                 sh 'mvn sonar:sonar'
-                                sh 'cat target/sonar/report-task.txtt'
+                                sh 'cat target/sonar/report-task.txt'
                             }
                         }
                     }
@@ -63,4 +80,4 @@ pipeline {
             }
         }
     }
-
+}
