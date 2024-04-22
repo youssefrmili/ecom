@@ -1,8 +1,9 @@
+    // Define the microservice folder names
+def microserviceFolders = ['ecomm-cart']
 pipeline {
     agent any
 
-    // Define the microservice folder names
-    def microserviceFolders = ['ecomm-cart']
+
 
     stages {
         stage('Checkout') {
