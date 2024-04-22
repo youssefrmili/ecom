@@ -1,4 +1,4 @@
-def microserviceFolders = ['ecomm-cart']
+def microserviceFolders = ['ecomm-cart', 'ecomm-order', 'ecomm-product', 'ecomm-web']
 
 pipeline {
     agent any
@@ -44,24 +44,7 @@ pipeline {
                 }
             }
         }
-        
-        post {
-            always {
-                junit 'build/reports/**/*.xml'
-            }
-        }
-        
-        stage('Slack Notification') {
-            steps {
-                // Execute steps in a node
-                node (any) {
-                    // Upload a file and send a message to Slack
-                    sh "find . -name 'TEST-*.xml' | xargs zip test-reports.zip"
-                    slackUploadFile filePath: 'test-reports.zip', initialComment:  "Test Reports"
-                }
-            }
-        }
-        
+
         stage('SonarQube Analysis') {
             steps {
                 script {
