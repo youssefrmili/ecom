@@ -1,8 +1,7 @@
 def microserviceFolders = ['ecomm-cart']
+
 pipeline {
     agent any
-
-    // Define the microservice folder names
 
     stages {
         stage('Checkout') {
@@ -63,8 +62,9 @@ pipeline {
                 }
             }
         }
-        
-  post {
+    }
+
+    post {
         failure {
             script {
                 def failedStage = currentBuild.rawBuild.getCause(hudson.model.Failure.class).failedSinceLabel
