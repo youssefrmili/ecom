@@ -24,7 +24,7 @@ pipeline {
                         // Navigate into the microservice folder
                         dir(folder) {
                             // Build the microservice
-                            sh 'mvn clean installl'
+                            sh 'mvn clean install'
                         }
                     }
                 }
@@ -56,7 +56,7 @@ pipeline {
                             // Execute SAST with SonarQube
                             withSonarQubeEnv(credentialsId: 'sonarqube-id') {
                                 sh 'mvn sonar:sonar'
-                                sh 'cat target/sonar/report-task.txt'
+                                sh 'cat target/sonar/report-task.txtt'
                             }
                         }
                     }
