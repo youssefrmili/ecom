@@ -1,4 +1,4 @@
-def microserviceFolders = ['ecomm-cart', 'ecomm-order', 'ecomm-product', 'ecomm-web']
+def microserviceFolders = ['ecomm-cart']
 
 pipeline {
     agent any
