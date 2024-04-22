@@ -40,7 +40,7 @@ pipeline {
                         // Navigate into the microservice folder
                         dir(folder) {
                             // Test the microservice
-                            sh 'mvn test > f1'
+                            sh 'mvn test -Doutput=target/test_results.txt'
 
                             // Save test report as a file
                            
@@ -78,7 +78,7 @@ pipeline {
                     slackSend channel: 'test', message: 'SonarQube Analysis Report', teamDomain: 'Sofiatech PFE Interns ', username: 'jenkins', file: 'sonar_report.txt'
                     
                     // Upload test report to Slack
-                    slackSend channel: 'test', message: 'Test Report', teamDomain: 'Sofiatech PFE Interns ', username: 'jenkins', file: 'test_report.xml'
+                    slackSend channel: 'test', message: 'Test Report', teamDomain: 'Sofiatech PFE Interns ', username: 'jenkins', file: 'test_results.txt'
                 }
             }
         }
