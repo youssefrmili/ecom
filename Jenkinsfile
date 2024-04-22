@@ -46,7 +46,7 @@ pipeline {
                 script {
                     CI_ERROR = "Failed while testing microservices"
                     // Iterate over each microservice folder
-                    for (def folder in microserviceFolders) {
+                    afor (def folder in microserviceFolders) {
                         // Navigate into the microservice folder
                         dir(folder) {
                             // Test the microservice
