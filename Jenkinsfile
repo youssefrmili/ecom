@@ -40,10 +40,10 @@ pipeline {
                         // Navigate into the microservice folder
                         dir(folder) {
                             // Test the microservice
-                            sh 'mvn test'
+                            sh 'mvn test > f1'
 
                             // Save test report as a file
-                            sh 'cp target/surefire-reports/*.xml test_report.xml'
+                           
                         }
                     }
                 }
