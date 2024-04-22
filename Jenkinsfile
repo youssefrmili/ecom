@@ -3,8 +3,6 @@ def microserviceFolders = ['ecomm-cart']
 pipeline {
     agent any
 
-
-
     stages {
         stage('Checkout') {
             steps {
@@ -68,7 +66,7 @@ pipeline {
     
     post {
         always {
-            node {
+            node (any) {
                 // Upload a file and send a message to Slack
                 sh "echo hey > blah.txt"
                 slackUploadFile filePath: "*.txt", initialComment:  "HEY HEY"
