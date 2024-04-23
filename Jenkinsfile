@@ -9,7 +9,7 @@ pipeline {
                 // Checkout the main repository
                 checkout([
                     $class: 'GitSCM', 
-                    branches: [[name: 'feature']], 
+                    branches: [[name: '*']], 
                     userRemoteConfigs: [[url: 'https://github.com/youssefrmili/ecom.git']]
                 ])
             }
