@@ -1,5 +1,4 @@
-def microserviceFolders = ['ecomm-cart', 'ecomm-order', 'ecomm-product', 'ecomm-web']
-
+def microservices = ['ecomm-cart']
 pipeline {
     agent any
 
@@ -15,13 +14,13 @@ pipeline {
             }
         }
 
-        stage('Build Microservices') {
+        stage('Build') {
             steps {
                 script {
                     // Iterate over each microservice folder
-                    for (def folder in microserviceFolders) {
+                    for (def service in microservices) {
                         // Navigate into the microservice folder
-                        dir(folder) {
+                        dir(service) {
                             // Build the microservice
                             sh 'mvn clean install'
                         }
@@ -30,13 +29,13 @@ pipeline {
             }
         }
 
-        stage('Test Microservices') {
+        stage('Unit Test') {
             steps {
                 script {
                     // Iterate over each microservice folder
-                    for (def folder in microserviceFolders) {
+                    for (def service in microservices) {
                         // Navigate into the microservice folder
-                        dir(folder) {
+                        dir(service) {
                             // Test the microservice
                             sh 'mvn test'
                         }
@@ -49,9 +48,9 @@ pipeline {
             steps {
                 script {
                     // Iterate over each microservice folder
-                    for (def folder in microserviceFolders) {
+                    for (def service in microservices) {
                         // Navigate into the microservice folder
-                        dir(folder) {
+                        dir(service) {
                             // Execute SAST with SonarQube
                             withSonarQubeEnv(credentialsId: 'sonarqube-id') {
                                 sh 'mvn sonar:sonar'
@@ -63,33 +62,26 @@ pipeline {
             }
         }
 
-        stage('Build Docker Images') {
-            steps {
-                script {
-                    // Iterate over each microservice folder
-                    for (def folder in microserviceFolders) {
-                        // Navigate into the microservice folder
-                        dir(folder) {
-                            // Build Docker image
-                            sh "docker build -t youssefrm/${folder}:latest ."
-                        }
-                    }
-                }
-            }
-        }
-
-        stage('Push Docker Images to Docker Hub') {
+        stage('Build and Push Docker Images') {
             environment {
                 DOCKER_CREDENTIALS = credentials('dockerhub')
             }
             steps {
                 script {
+                    // Docker login
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+                    }
+
                     // Iterate over each microservice folder
-                    for (def folder in microserviceFolders) {
-                        // Docker login
-                        sh "docker login -u $DOCKER_CREDENTIALS_USR -p $DOCKER_CREDENTIALS_PSW"
-                        // Push Docker image
-                        sh "docker push youssefrm/${folder}:latest"
+                    for (def service in microservices) {
+                        // Navigate into the microservice folder
+                        dir(service) {
+                            // Build Docker image
+                            sh "docker build -t youssefrm/${service}:latest ."
+                            // Push Docker image
+                            sh "docker push youssefrm/${service}:latest"
+                        }
                     }
                 }
             }
