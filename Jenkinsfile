@@ -80,7 +80,7 @@ pipeline {
 
         stage('Push Docker Images to Docker Hub') {
             environment {
-                DOCKER_CREDENTIALS = credentials('c6ea3088-f7ad-4b7a-a9f6-3614f2de2f25')
+                DOCKER_CREDENTIALS = credentials('dockerhub')
             }
             steps {
                 script {
