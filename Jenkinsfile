@@ -1,4 +1,4 @@
-def microserviceFolders = ['ecomm-cart']
+def microservices = ['ecomm-cart']
 
 pipeline {
     agent any
@@ -15,13 +15,13 @@ pipeline {
             }
         }
 
-        stage('Build Microservices') {
+        stage('Build') {
             steps {
                 script {
                     // Iterate over each microservice folder
-                    for (def folder in microserviceFolders) {
+                    for (def service in microservices) {
                         // Navigate into the microservice folder
-                        dir(folder) {
+                        dir(service) {
                             // Build the microservice
                             sh 'mvn clean install'
                         }
@@ -30,13 +30,13 @@ pipeline {
             }
         }
 
-        stage('Test Microservices') {
+        stage('Unit Test') {
             steps {
                 script {
                     // Iterate over each microservice folder
-                    for (def folder in microserviceFolders) {
+                    for (def service in microservices) {
                         // Navigate into the microservice folder
-                        dir(folder) {
+                        dir(service) {
                             // Test the microservice
                             sh 'mvn test'
                         }
@@ -49,9 +49,9 @@ pipeline {
             steps {
                 script {
                     // Iterate over each microservice folder
-                    for (def folder in microserviceFolders) {
+                    for (def service in microservices) {
                         // Navigate into the microservice folder
-                        dir(folder) {
+                        dir(service) {
                             // Execute SAST with SonarQube
                             withSonarQubeEnv(credentialsId: 'sonarqube-id') {
                                 sh 'mvn sonar:sonar'
@@ -64,3 +64,4 @@ pipeline {
         }
     }
 }
+
