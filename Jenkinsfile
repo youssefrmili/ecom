@@ -1,4 +1,4 @@
-def microservices = ['ecomm-cart']
+def microservices = ['ecomm-cart','ecomm-order','ecomm-product','ecomm-web']
 
 pipeline {
     agent any
@@ -60,27 +60,6 @@ pipeline {
                         }
                     }
                 }
-            }
-        }
-
-        stage('Nexus Artifact Upload') {
-            steps {
-                // Nexus artifact upload stage
-                nexusArtifactUploader(
-                    nexusVersion: 'nexus3',
-                    protocol: 'http',
-                    nexusUrl: 'http://localhost:8081',
-                    groupId: 'com.example',
-                    version: version,
-                    repository: 'maven-public',
-                    credentialsId: 'nexus-id',
-                    artifacts: [
-                        [artifactId: projectName,
-                         classifier: '',
-                         file: 'my-service-' + version + '.jar',
-                         type: 'jar']
-                    ]
-                )
             }
         }
 
