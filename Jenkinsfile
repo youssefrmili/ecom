@@ -19,6 +19,8 @@ switch (branchName) {
         println "No matching microservice found for branch $branchName"
 }
 
+return microservice
+
 pipeline {
     agent any
 
