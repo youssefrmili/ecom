@@ -5,39 +5,29 @@ pipeline {
 
     stages {
         stage('Checkout') {
+            when {
+                changeset '**/*'
+            }
             steps {
-                // Checkout the main repository
+                // Checkout the main repository using the new URL
                 checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: '*']],
-                    userRemoteConfigs: [[url: 'https://github.com/youssefrmili/Ecommerce-APP.git']]
+                    $class: 'GitSCM', 
+                    branches: [[name: '*']], 
+                    userRemoteConfigs: [[url: 'https://github.com/youssefrmili/ecom.git']]
                 ])
             }
         }
 
-        stage('Validation') {
-            steps {
-                script {
-                    dir('service') {
-                        def strCount = sh(returnStdout: true, script: "git diff --name-only ${env.GIT_COMMIT} ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT} | grep service | wc -l").trim()
-                        if (strCount == "0") {
-                            echo "Skipping build as no files updated in the service module"
-                            CONTINUE_BUILD = false
-                        } else {
-                            echo "Changes found in the service module"
-                        }
-                    }
-                }
-            }
-        }
-
         stage('Check-Git-Secrets') {
+            when {
+                changeset '**/*'
+            }
             steps {
                 script {
                     for (def service in microservices) {
                         dir(service) {
                             sh 'rm trufflehog || true'
-                            sh 'docker run gesellix/trufflehog --json https://github.com/youssefrmili/Ecommerce-APP.git > trufflehog'
+                            sh 'docker run gesellix/trufflehog --json https://github.com/youssefrmili/ecom.git > trufflehog'
                             sh 'cat trufflehog'
                         }
                     }
@@ -46,6 +36,9 @@ pipeline {
         }
 
         stage('Source Composition Analysis') {
+            when {
+                changeset '**/*'
+            }
             steps {
                 script {
                     for (def service in microservices) {
@@ -62,6 +55,9 @@ pipeline {
         }
 
         stage('Build') {
+            when {
+                changeset "**/${service}/**"
+            }
             steps {
                 script {
                     for (def service in microservices) {
@@ -74,6 +70,9 @@ pipeline {
         }
 
         stage('Unit Test') {
+            when {
+                changeset "**/${service}/**"
+            }
             steps {
                 script {
                     for (def service in microservices) {
@@ -86,6 +85,9 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
+            when {
+                changeset "**/${service}/**"
+            }
             steps {
                 script {
                     for (def service in microservices) {
@@ -108,16 +110,12 @@ pipeline {
                     }
                 }
             }
-            // Add condition to only run if the branch is 'master' or 'test'
-            when {
-                anyOf {
-                    branch 'master'
-                    branch 'test'
-                }
-            }
         }
 
         stage('Docker Build') {
+            when {
+                changeset "**/${service}/**"
+            }
             steps {
                 script {
                     for (def service in microservices) {
@@ -125,44 +123,6 @@ pipeline {
                             sh "docker build -t youssefrm/${service}:latest ."
                         }
                     }
-                }
-            }
-            when {
-                anyOf {
-                    branch 'master'
-                    branch 'test'
-                }
-            }
-        }
-
-        stage('Trivy Image Scan') {
-            steps {
-                script {
-                    for (def service in microservices) {
-                        sh "docker run --rm -v /home/youssef/.cache:/root/.cache/ aquasec/trivy image --scanners vuln --timeout 15m youssefrm/${service}:latest > trivy.txt"
-                    }
-                }
-            }
-            when {
-                anyOf {
-                    branch 'master'
-                    branch 'test'
-                }
-            }
-        }
-
-        stage('Docker Push') {
-            steps {
-                script {
-                    for (def service in microservices) {
-                        sh "docker push youssefrm/${service}:latest"
-                    }
-                }
-            }
-            when {
-                anyOf {
-                    branch 'master'
-                    branch 'test'
                 }
             }
         }
