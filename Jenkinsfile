@@ -15,6 +15,22 @@ pipeline {
             }
         }
 
+        stage('Check-Git-Secrets') {
+            steps {
+                script {
+                    // Iterate over each microservice folder
+                    for (def service in microservices) {
+                        // Navigate into the microservice folder
+                        dir(service) {
+                            sh 'rm trufflehog || true'
+                            sh 'docker run gesellix/trufflehog --json https://github.com/youssefrmili/ecom.git > trufflehog'
+                            sh 'cat trufflehog'
+                        }
+                    }
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 script {
@@ -57,6 +73,32 @@ pipeline {
                                 sh 'mvn sonar:sonar'
                                 sh 'cat target/sonar/report-task.txt'
                             }
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Docker Login') {
+            steps {
+                script {
+                    // Docker login
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+                    }
+                }
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                script {
+                    // Iterate over each microservice folder
+                    for (def service in microservices) {
+                        // Navigate into the microservice folder
+                        dir(service) {
+                            // Build Docker image
+                            sh "docker build -t youssefrm/${service}:latest ."
                         }
                     }
                 }
